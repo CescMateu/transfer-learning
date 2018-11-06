@@ -44,20 +44,20 @@ if __name__ == '__main__':
     set_logger(os.path.join(args.model_dir, 'train.log'))
 
     # Create the input data pipeline
-    logging.info("Reading the TFRecords training files...")
+    logging.info("\nReading the TFRecords training files...")
     train_inputs = input_fn(tfrecord_dir=os.path.join(args.data_dir, 'train'),
                             mean_npz=None, n_images=None, is_training=True, seed=1234,
                             name='train', params=params)
-    logging.info("Reading the TFRecords validaiton files...")
+    logging.info("\nReading the TFRecords validation files...")
     validation_inputs = input_fn(tfrecord_dir=os.path.join(args.data_dir, 'validation'),
                             mean_npz=None, n_images=None, is_training=False, seed=1234,
                             name='validation', params=params)
 
     # Define the model
-    logging.info("Creating the model...")
+    logging.info("\nCreating the model...")
     train_model_spec = model_fn(train_inputs, params, is_training=True)
     eval_model_spec = model_fn(validation_inputs, params, is_training=False)
 
     # Train the model
-    logging.info("Starting training for {} epoch(s)".format(params.num_epochs))
+    logging.info("\nStarting training for {} epoch(s)".format(params.num_epochs))
     train_and_evaluate(train_model_spec, eval_model_spec, args.model_dir, params, args.restore_from)

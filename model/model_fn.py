@@ -1,8 +1,10 @@
 """Define the model."""
 
 import tensorflow as tf
+import numpy as np
 
 from model.cnn import CNN
+
 
 
 def build_model(input_tensor, params, is_training, reuse):
@@ -20,8 +22,6 @@ def build_model(input_tensor, params, is_training, reuse):
     cnn = CNN()
     cnn.build(input_tensor, params, is_training, reuse)
     logits = cnn.logits
-
-    print(logits)
 
     return logits
 
@@ -41,8 +41,11 @@ def model_fn(inputs, params, is_training):
     """
 
     # Extract the inputs and cast them into the appropriate data types
-    labels = tf.cast(inputs['labels'], tf.int32)
-    images = tf.cast(inputs['images'], tf.float32)
+    labels = tf.cast(inputs['labels'], tf.int32, name='labels')
+    images = tf.cast(inputs['images'], tf.float32, name='images')
+
+    # Check images are in the expected shape
+    assert images.get_shape().as_list() == [None, params.image_size, params.image_size, 3]
 
     # Set the 'reuse' parameter from tf.variable_scope() correctly
     reuse = not is_training
@@ -51,30 +54,29 @@ def model_fn(inputs, params, is_training):
     # MODEL: define the layers of the model
     # Compute the output distribution of the model and the predictions
     logits = build_model(images, params, is_training=is_training, reuse=reuse)
-    predictions = tf.cast(tf.argmax(logits, 1), tf.int32)
+    predictions = tf.cast(tf.argmax(logits, 1), tf.int32, name='predictions')
 
     # Define loss and accuracy
     loss = tf.losses.sparse_softmax_cross_entropy(labels=labels, logits=logits)
-    accuracy_vec = tf.cast(tf.equal(labels, predictions), tf.float32)
-    accuracy = tf.reduce_mean(accuracy_vec)
+    accuracy = tf.reduce_mean(tf.cast(tf.equal(labels, predictions), tf.float32))
 
     # Define training step that minimizes the loss with the Adam optimizer
     if is_training:
-        optimizer = tf.train.AdamOptimizer(params.learning_rate)
+        optimizer = tf.train.AdamOptimizer(params.learning_rate, name='adam_opt')
         global_step = tf.train.get_or_create_global_step()
         if params.use_batch_norm:
             # Add a dependency to update the moving mean and variance for batch normalization
             with tf.control_dependencies(tf.get_collection(tf.GraphKeys.UPDATE_OPS)):
-                train_op = optimizer.minimize(loss, global_step=global_step)
+                train_op = optimizer.minimize(loss, global_step=global_step, name='train_op')
         else:
-            train_op = optimizer.minimize(loss, global_step=global_step)
+            train_op = optimizer.minimize(loss, global_step=global_step, name='train_op')
 
     # -----------------------------------------------------------
     # METRICS AND SUMMARIES
     # Metrics for evaluation using tf.metrics (average over whole dataset)
     with tf.variable_scope("metrics"):
         metrics = {
-            'accuracy': tf.metrics.accuracy(labels=labels, predictions=tf.cast(tf.argmax(logits, 1), tf.int32)),
+            'accuracy': tf.metrics.accuracy(labels=labels, predictions=tf.argmax(logits, 1)),
             'loss': tf.metrics.mean(loss)
         }
 
@@ -93,6 +95,20 @@ def model_fn(inputs, params, is_training):
     # # Add incorrectly labeled images
     # mask = tf.not_equal(labels, predictions)
     #
+    # with tf.Session() as sess:
+    #     sess.run(tf.global_variables_initializer())
+    #     sess.run(inputs['it_init_op'])
+    #
+    #     print('PREDICTIONS')
+    #     print(sess.run(tf.shape(predictions)))
+    #     print('LABELS')
+    #     print(sess.run(tf.shape(labels)))
+    #     print('MASK')
+    #     mask_sess = sess.run(mask)
+    #     print(mask_sess)
+    #     print(mask_sess.shape)
+    #
+    #
     # # Add a different summary to know how they were misclassified
     # for label in range(0, params.num_labels):
     #     mask_label = tf.logical_and(mask, tf.equal(predictions, label))
@@ -100,7 +116,7 @@ def model_fn(inputs, params, is_training):
     #     tf.summary.image('incorrectly_labeled_{}'.format(label), incorrect_image_label)
 
     # -----------------------------------------------------------
-    # MODEL SPECIFICATION
+    # MODEL SPECIFICATIONS
     # Create the model specification and return it
     # It contains nodes or operations in the graph that will be used for training and evaluation
     model_spec = inputs

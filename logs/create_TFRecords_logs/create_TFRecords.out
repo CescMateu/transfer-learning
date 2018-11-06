@@ -1,0 +1,417 @@
+----- Counting train images -----
+Number of images with altpig: 1033
+Number of images with dmae: 3844
+Number of images with excavation: 1464
+Number of images with membrana: 951
+Number of images with nevus: 1084
+Number of images with no pathology detected: 8376
+----- Counting test images -----
+Number of images with altpig: 323
+Number of images with dmae: 1202
+Number of images with excavation: 458
+Number of images with membrana: 298
+Number of images with nevus: 339
+Number of images with no pathology detected: 2620
+----- Counting validation images -----
+Number of images with altpig: 259
+Number of images with dmae: 961
+Number of images with excavation: 367
+Number of images with membrana: 238
+Number of images with nevus: 272
+Number of images with no pathology detected: 2097
+----- Counting all images -----
+Number of images with altpig: 1615
+Number of images with dmae: 6007
+Number of images with excavation: 2289
+Number of images with membrana: 1487
+Number of images with nevus: 1695
+Number of images with no pathology detected: 13093
+##### Getting the filenames and labels #### 
+
+
+ ---- Retreving TRAIN filenames ---- 
+
+Retrieved 8376 images with label "normal"
+Retrieved 1033 images with label "altpig"
+Retrieved 3844 images with label "dmae"
+Retrieved 1464 images with label "excavation"
+Retrieved 951 images with label "membrana"
+Retrieved 1084 images with label "nevus"
+
+ ---- Retreving TEST filenames ---- 
+
+Retrieved 2620 images with label "normal"
+Retrieved 323 images with label "altpig"
+Retrieved 1202 images with label "dmae"
+Retrieved 458 images with label "excavation"
+Retrieved 298 images with label "membrana"
+Retrieved 339 images with label "nevus"
+
+ ---- Retreving VALIDATION filenames ---- 
+
+Retrieved 2097 images with label "normal"
+Retrieved 259 images with label "altpig"
+Retrieved 961 images with label "dmae"
+Retrieved 367 images with label "excavation"
+Retrieved 238 images with label "membrana"
+Retrieved 272 images with label "nevus"
+
+ ##### Creating the TFRecords files #### 
+
+
+ ---- Creating TRAIN files in TFRecords format ----
+WARNING: Max_size is exceeded. 9 files will be created with maximum size 951 to place the 8376 images and labels
+----- Creating train/train_normal_balanced.tfrecords file -----
+Progress: 0/951 images converted
+Progress: 200/951 images converted
+Progress: 400/951 images converted
+Progress: 600/951 images converted
+Progress: 800/951 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_normal_balanced.tfrecords
+----- Creating train/train_normal_0.tfrecords file -----
+Progress: 0/951 images converted
+Progress: 200/951 images converted
+Progress: 400/951 images converted
+Progress: 600/951 images converted
+Progress: 800/951 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_normal_0.tfrecords
+----- Creating train/train_normal_1.tfrecords file -----
+Progress: 0/951 images converted
+Progress: 200/951 images converted
+Progress: 400/951 images converted
+Progress: 600/951 images converted
+Progress: 800/951 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_normal_1.tfrecords
+----- Creating train/train_normal_2.tfrecords file -----
+Progress: 0/951 images converted
+Progress: 200/951 images converted
+Progress: 400/951 images converted
+Progress: 600/951 images converted
+Progress: 800/951 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_normal_2.tfrecords
+----- Creating train/train_normal_3.tfrecords file -----
+Progress: 0/951 images converted
+Progress: 200/951 images converted
+Progress: 400/951 images converted
+Progress: 600/951 images converted
+Progress: 800/951 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_normal_3.tfrecords
+----- Creating train/train_normal_4.tfrecords file -----
+Progress: 0/951 images converted
+Progress: 200/951 images converted
+Progress: 400/951 images converted
+Progress: 600/951 images converted
+Progress: 800/951 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_normal_4.tfrecords
+----- Creating train/train_normal_5.tfrecords file -----
+Progress: 0/951 images converted
+Progress: 200/951 images converted
+Progress: 400/951 images converted
+Progress: 600/951 images converted
+Progress: 800/951 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_normal_5.tfrecords
+----- Creating train/train_normal_6.tfrecords file -----
+Progress: 0/951 images converted
+Progress: 200/951 images converted
+Progress: 400/951 images converted
+Progress: 600/951 images converted
+Progress: 800/951 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_normal_6.tfrecords
+----- Creating train/train_normal_7.tfrecords file -----
+Progress: 0/768 images converted
+Progress: 200/768 images converted
+Progress: 400/768 images converted
+Progress: 600/768 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_normal_7.tfrecords
+----- Creating train/train_normal_8.tfrecords file -----
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_normal_8.tfrecords
+WARNING: Max_size is exceeded. 2 files will be created with maximum size 951 to place the 1033 images and labels
+----- Creating train/train_altpig_balanced.tfrecords file -----
+Progress: 0/951 images converted
+Progress: 200/951 images converted
+Progress: 400/951 images converted
+Progress: 600/951 images converted
+Progress: 800/951 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_altpig_balanced.tfrecords
+----- Creating train/train_altpig_0.tfrecords file -----
+Progress: 0/82 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_altpig_0.tfrecords
+----- Creating train/train_altpig_1.tfrecords file -----
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_altpig_1.tfrecords
+WARNING: Max_size is exceeded. 5 files will be created with maximum size 951 to place the 3844 images and labels
+----- Creating train/train_dmae_balanced.tfrecords file -----
+Progress: 0/951 images converted
+Progress: 200/951 images converted
+Progress: 400/951 images converted
+Progress: 600/951 images converted
+Progress: 800/951 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_dmae_balanced.tfrecords
+----- Creating train/train_dmae_0.tfrecords file -----
+Progress: 0/951 images converted
+Progress: 200/951 images converted
+Progress: 400/951 images converted
+Progress: 600/951 images converted
+Progress: 800/951 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_dmae_0.tfrecords
+----- Creating train/train_dmae_1.tfrecords file -----
+Progress: 0/951 images converted
+Progress: 200/951 images converted
+Progress: 400/951 images converted
+Progress: 600/951 images converted
+Progress: 800/951 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_dmae_1.tfrecords
+----- Creating train/train_dmae_2.tfrecords file -----
+Progress: 0/951 images converted
+Progress: 200/951 images converted
+Progress: 400/951 images converted
+Progress: 600/951 images converted
+Progress: 800/951 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_dmae_2.tfrecords
+----- Creating train/train_dmae_3.tfrecords file -----
+Progress: 0/40 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_dmae_3.tfrecords
+----- Creating train/train_dmae_4.tfrecords file -----
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_dmae_4.tfrecords
+WARNING: Max_size is exceeded. 2 files will be created with maximum size 951 to place the 1464 images and labels
+----- Creating train/train_excavation_balanced.tfrecords file -----
+Progress: 0/951 images converted
+Progress: 200/951 images converted
+Progress: 400/951 images converted
+Progress: 600/951 images converted
+Progress: 800/951 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_excavation_balanced.tfrecords
+----- Creating train/train_excavation_0.tfrecords file -----
+Progress: 0/513 images converted
+Progress: 200/513 images converted
+Progress: 400/513 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_excavation_0.tfrecords
+----- Creating train/train_excavation_1.tfrecords file -----
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_excavation_1.tfrecords
+----- Creating train/train_membrana_balanced.tfrecords file -----
+Progress: 0/951 images converted
+Progress: 200/951 images converted
+Progress: 400/951 images converted
+Progress: 600/951 images converted
+Progress: 800/951 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_membrana_balanced.tfrecords
+----- Creating train/train_membrana_0.tfrecords file -----
+Progress: 0/951 images converted
+Progress: 200/951 images converted
+Progress: 400/951 images converted
+Progress: 600/951 images converted
+Progress: 800/951 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_membrana_0.tfrecords
+WARNING: Max_size is exceeded. 2 files will be created with maximum size 951 to place the 1084 images and labels
+----- Creating train/train_nevus_balanced.tfrecords file -----
+Progress: 0/951 images converted
+Progress: 200/951 images converted
+Progress: 400/951 images converted
+Progress: 600/951 images converted
+Progress: 800/951 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_nevus_balanced.tfrecords
+----- Creating train/train_nevus_0.tfrecords file -----
+Progress: 0/133 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_nevus_0.tfrecords
+----- Creating train/train_nevus_1.tfrecords file -----
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_nevus_1.tfrecords
+
+ ---- Creating TEST files in TFRecords format ----
+WARNING: Max_size is exceeded. 9 files will be created with maximum size 298 to place the 2620 images and labels
+----- Creating test/test_normal_balanced.tfrecords file -----
+Progress: 0/298 images converted
+Progress: 200/298 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_normal_balanced.tfrecords
+----- Creating test/test_normal_0.tfrecords file -----
+Progress: 0/298 images converted
+Progress: 200/298 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_normal_0.tfrecords
+----- Creating test/test_normal_1.tfrecords file -----
+Progress: 0/298 images converted
+Progress: 200/298 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_normal_1.tfrecords
+----- Creating test/test_normal_2.tfrecords file -----
+Progress: 0/298 images converted
+Progress: 200/298 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_normal_2.tfrecords
+----- Creating test/test_normal_3.tfrecords file -----
+Progress: 0/298 images converted
+Progress: 200/298 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_normal_3.tfrecords
+----- Creating test/test_normal_4.tfrecords file -----
+Progress: 0/298 images converted
+Progress: 200/298 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_normal_4.tfrecords
+----- Creating test/test_normal_5.tfrecords file -----
+Progress: 0/298 images converted
+Progress: 200/298 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_normal_5.tfrecords
+----- Creating test/test_normal_6.tfrecords file -----
+Progress: 0/298 images converted
+Progress: 200/298 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_normal_6.tfrecords
+----- Creating test/test_normal_7.tfrecords file -----
+Progress: 0/236 images converted
+Progress: 200/236 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_normal_7.tfrecords
+----- Creating test/test_normal_8.tfrecords file -----
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_normal_8.tfrecords
+WARNING: Max_size is exceeded. 2 files will be created with maximum size 298 to place the 323 images and labels
+----- Creating test/test_altpig_balanced.tfrecords file -----
+Progress: 0/298 images converted
+Progress: 200/298 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_altpig_balanced.tfrecords
+----- Creating test/test_altpig_0.tfrecords file -----
+Progress: 0/25 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_altpig_0.tfrecords
+----- Creating test/test_altpig_1.tfrecords file -----
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_altpig_1.tfrecords
+WARNING: Max_size is exceeded. 5 files will be created with maximum size 298 to place the 1202 images and labels
+----- Creating test/test_dmae_balanced.tfrecords file -----
+Progress: 0/298 images converted
+Progress: 200/298 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_dmae_balanced.tfrecords
+----- Creating test/test_dmae_0.tfrecords file -----
+Progress: 0/298 images converted
+Progress: 200/298 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_dmae_0.tfrecords
+----- Creating test/test_dmae_1.tfrecords file -----
+Progress: 0/298 images converted
+Progress: 200/298 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_dmae_1.tfrecords
+----- Creating test/test_dmae_2.tfrecords file -----
+Progress: 0/298 images converted
+Progress: 200/298 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_dmae_2.tfrecords
+----- Creating test/test_dmae_3.tfrecords file -----
+Progress: 0/10 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_dmae_3.tfrecords
+----- Creating test/test_dmae_4.tfrecords file -----
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_dmae_4.tfrecords
+WARNING: Max_size is exceeded. 2 files will be created with maximum size 298 to place the 458 images and labels
+----- Creating test/test_excavation_balanced.tfrecords file -----
+Progress: 0/298 images converted
+Progress: 200/298 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_excavation_balanced.tfrecords
+----- Creating test/test_excavation_0.tfrecords file -----
+Progress: 0/160 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_excavation_0.tfrecords
+----- Creating test/test_excavation_1.tfrecords file -----
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_excavation_1.tfrecords
+----- Creating test/test_membrana_balanced.tfrecords file -----
+Progress: 0/298 images converted
+Progress: 200/298 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_membrana_balanced.tfrecords
+----- Creating test/test_membrana_0.tfrecords file -----
+Progress: 0/298 images converted
+Progress: 200/298 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_membrana_0.tfrecords
+WARNING: Max_size is exceeded. 2 files will be created with maximum size 298 to place the 339 images and labels
+----- Creating test/test_nevus_balanced.tfrecords file -----
+Progress: 0/298 images converted
+Progress: 200/298 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_nevus_balanced.tfrecords
+----- Creating test/test_nevus_0.tfrecords file -----
+Progress: 0/41 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_nevus_0.tfrecords
+----- Creating test/test_nevus_1.tfrecords file -----
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/test/test_nevus_1.tfrecords
+
+ ---- Creating VALIDATION files in TFRecords format ----
+WARNING: Max_size is exceeded. 9 files will be created with maximum size 238 to place the 2097 images and labels
+----- Creating validation/validation_normal_balanced.tfrecords file -----
+Progress: 0/238 images converted
+Progress: 200/238 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_normal_balanced.tfrecords
+----- Creating validation/validation_normal_0.tfrecords file -----
+Progress: 0/238 images converted
+Progress: 200/238 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_normal_0.tfrecords
+----- Creating validation/validation_normal_1.tfrecords file -----
+Progress: 0/238 images converted
+Progress: 200/238 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_normal_1.tfrecords
+----- Creating validation/validation_normal_2.tfrecords file -----
+Progress: 0/238 images converted
+Progress: 200/238 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_normal_2.tfrecords
+----- Creating validation/validation_normal_3.tfrecords file -----
+Progress: 0/238 images converted
+Progress: 200/238 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_normal_3.tfrecords
+----- Creating validation/validation_normal_4.tfrecords file -----
+Progress: 0/238 images converted
+Progress: 200/238 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_normal_4.tfrecords
+----- Creating validation/validation_normal_5.tfrecords file -----
+Progress: 0/238 images converted
+Progress: 200/238 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_normal_5.tfrecords
+----- Creating validation/validation_normal_6.tfrecords file -----
+Progress: 0/238 images converted
+Progress: 200/238 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_normal_6.tfrecords
+----- Creating validation/validation_normal_7.tfrecords file -----
+Progress: 0/193 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_normal_7.tfrecords
+----- Creating validation/validation_normal_8.tfrecords file -----
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_normal_8.tfrecords
+WARNING: Max_size is exceeded. 2 files will be created with maximum size 238 to place the 259 images and labels
+----- Creating validation/validation_altpig_balanced.tfrecords file -----
+Progress: 0/238 images converted
+Progress: 200/238 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_altpig_balanced.tfrecords
+----- Creating validation/validation_altpig_0.tfrecords file -----
+Progress: 0/21 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_altpig_0.tfrecords
+----- Creating validation/validation_altpig_1.tfrecords file -----
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_altpig_1.tfrecords
+WARNING: Max_size is exceeded. 5 files will be created with maximum size 238 to place the 961 images and labels
+----- Creating validation/validation_dmae_balanced.tfrecords file -----
+Progress: 0/238 images converted
+Progress: 200/238 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_dmae_balanced.tfrecords
+----- Creating validation/validation_dmae_0.tfrecords file -----
+Progress: 0/238 images converted
+Progress: 200/238 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_dmae_0.tfrecords
+----- Creating validation/validation_dmae_1.tfrecords file -----
+Progress: 0/238 images converted
+Progress: 200/238 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_dmae_1.tfrecords
+----- Creating validation/validation_dmae_2.tfrecords file -----
+Progress: 0/238 images converted
+Progress: 200/238 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_dmae_2.tfrecords
+----- Creating validation/validation_dmae_3.tfrecords file -----
+Progress: 0/9 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_dmae_3.tfrecords
+----- Creating validation/validation_dmae_4.tfrecords file -----
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_dmae_4.tfrecords
+WARNING: Max_size is exceeded. 2 files will be created with maximum size 238 to place the 367 images and labels
+----- Creating validation/validation_excavation_balanced.tfrecords file -----
+Progress: 0/238 images converted
+Progress: 200/238 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_excavation_balanced.tfrecords
+----- Creating validation/validation_excavation_0.tfrecords file -----
+Progress: 0/129 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_excavation_0.tfrecords
+----- Creating validation/validation_excavation_1.tfrecords file -----
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_excavation_1.tfrecords
+----- Creating validation/validation_membrana_balanced.tfrecords file -----
+Progress: 0/238 images converted
+Progress: 200/238 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_membrana_balanced.tfrecords
+----- Creating validation/validation_membrana_0.tfrecords file -----
+Progress: 0/238 images converted
+Progress: 200/238 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_membrana_0.tfrecords
+WARNING: Max_size is exceeded. 2 files will be created with maximum size 238 to place the 272 images and labels
+----- Creating validation/validation_nevus_balanced.tfrecords file -----
+Progress: 0/238 images converted
+Progress: 200/238 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_nevus_balanced.tfrecords
+----- Creating validation/validation_nevus_0.tfrecords file -----
+Progress: 0/34 images converted
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_nevus_0.tfrecords
+----- Creating validation/validation_nevus_1.tfrecords file -----
+/gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_nevus_1.tfrecords

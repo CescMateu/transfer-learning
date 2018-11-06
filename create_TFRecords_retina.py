@@ -16,7 +16,8 @@ def get_labels_from_illness(illness, n_filenames):
     Returns a list with the id of the illness and length of n_filenames
     '''
     
-    assert illness in ['normal', 'altpig', 'dmae', 'excavation', 'membrana', 'nevus'], 'The introduced illness does not exist'
+    assert illness in ['normal', 'altpig', 'dmae', 'excavation', 'membrana', 'nevus'], 'The introduced illness ' \
+                                                                                       'does not exist'
     assert n_filenames != 0, 'The number of filenames should be greater than 0'
     
     if illness == 'normal':
@@ -36,14 +37,17 @@ def get_labels_from_illness(illness, n_filenames):
     
     return [illness_id]*n_filenames
 
+
 def get_filenames_labels_mode_pathologies(parent_dir, mode_to_retrieve, class_type_to_retrieve):
     '''
-    Given the parent_dir, the mode ('train', 'test', 'validation') and the class label in string format, this function returns a dictionary with the names of
-    all the filenames found inside the parent directory with that mode and class label
+    Given the parent_dir, the mode ('train', 'test', 'validation') and the class label in string format,
+    this function returns a dictionary with the names of all the filenames found inside the parent directory
+    with that mode and class label
     '''
     
     assert os.path.isdir(parent_dir), 'The parent directory specified does not exist'
-    assert mode_to_retrieve in ['train', 'test', 'validation'], 'The specified mode does not exist. Options: "train", "test", "validation"'
+    assert mode_to_retrieve in ['train', 'test', 'validation'], 'The specified mode does not exist. ' \
+                                                                'Options: "train", "test", "validation"'
     assert class_type_to_retrieve in ['altpig', 'dmae', 'excavation', 'membrana', 'nevus']
     
     # Define the pathology dirname
@@ -55,14 +59,16 @@ def get_filenames_labels_mode_pathologies(parent_dir, mode_to_retrieve, class_ty
     filenames_to_retrieve = [f for f in glob.glob(dir_to_search + '/*') if f.endswith('.jpg')]
     labels_to_retrieve = get_labels_from_illness(illness=class_type_to_retrieve, n_filenames=len(filenames_to_retrieve))
 
-    assert len(filenames_to_retrieve) == len(labels_to_retrieve), 'The lengths of the retrieved filenames and labels do not coincide.'
+    assert len(filenames_to_retrieve) == len(labels_to_retrieve), 'The lengths of the retrieved filenames and labels ' \
+                                                                  'do not coincide.'
     
     # Give some feedback
     print('Retrieved {} images with label "{}"'.format(len(filenames_to_retrieve), class_type_to_retrieve))
 
-    out = {'filenames': filenames_to_retrieve, 'labels':labels_to_retrieve}
+    out = {'filenames': filenames_to_retrieve, 'labels': labels_to_retrieve}
     
     return out
+
 
 def get_filenames_labels_mode_healthy(parent_dir, mode_to_retrieve):
     '''
@@ -71,26 +77,28 @@ def get_filenames_labels_mode_healthy(parent_dir, mode_to_retrieve):
     '''
     
     assert os.path.isdir(parent_dir), 'The parent directory specified does not exist'
-    assert mode_to_retrieve in ['train', 'test', 'validation'], 'The specified mode does not exist. Options: "train", "test", "validation"'
+    assert mode_to_retrieve in ['train', 'test', 'validation'], 'The specified mode does not exist. ' \
+                                                                'Options: "train", "test", "validation"'
 
-    filenames = [] # create an empty list for saving the filenames
-    labels = [] # create an empty list for saving the labels
+    filenames = []  # create an empty list for saving the filenames
+    labels = []  # create an empty list for saving the labels
     pathologies = ['altpig', 'dmae', 'excavation', 'membrana', 'nevus']
     pathologies_dirs = [os.path.join(parent_dir, 'u_{}_symbolic_512'.format(p)) for p in pathologies]
     
     for pathology_dir in pathologies_dirs:
-        mode_dirs = glob.glob(pathology_dir + '/*') # mode level
+        mode_dirs = glob.glob(pathology_dir + '/*')  # mode level
         
         for mode_dir in mode_dirs:
-            mode = mode_dir.split('/')[-1] # retrieve the last part of the pathname (the mode)
+            mode = mode_dir.split('/')[-1]  # retrieve the last part of the pathname (the mode)
             if mode == mode_to_retrieve:
-                dir_to_search = mode_dir + '/normal/*' # We only want the 'normal' images in this function
+                dir_to_search = mode_dir + '/normal/*'  # We only want the 'normal' images in this function
                 
                 # Retrieve the filenames and corresponding labels
                 filenames_to_retrieve = [f for f in glob.glob(dir_to_search) if f.endswith('.jpg')]
                 labels_to_retrieve = get_labels_from_illness(illness='normal', n_filenames=len(filenames_to_retrieve))
 
-                assert len(filenames_to_retrieve) == len(labels_to_retrieve), 'The lengths of the retrieve filenames and labels do not coincide.'
+                assert len(filenames_to_retrieve) == len(labels_to_retrieve), 'The lengths of the retrieve filenames' \
+                                                                              ' and labels do not coincide.'
 
                 # Append the previous results to the overall lists
                 filenames = filenames + filenames_to_retrieve
@@ -101,11 +109,19 @@ def get_filenames_labels_mode_healthy(parent_dir, mode_to_retrieve):
     
     # Give some feedback
     print('Retrieved {} images with label "normal"'.format(len(filenames)))
-    out = {'filenames': filenames, 'labels':labels}
+    out = {'filenames': filenames, 'labels': labels}
     
     return out
 
+
 def get_filenames_labels(parent_dir):
+    ''' String -> dict, dict, dict
+    Returns three dictionaries containing all the filenames stored inside the parent directory. Each dictionary
+    corresponds to one of the sets of the data (training, testing, validation).
+
+    :param parent_dir: (String) Path to the parent directory.
+    :return: Dictionaries containing the data with keys ['normal', 'altpig', 'dmae', 'excavation', 'membrana', 'nevus']
+    '''
 
     pathologies = ['altpig', 'dmae', 'excavation', 'membrana', 'nevus']
     
@@ -113,20 +129,23 @@ def get_filenames_labels(parent_dir):
     train = {}
     train['normal'] = get_filenames_labels_mode_healthy(parent_dir=parent_dir, mode_to_retrieve='train')
     for pathology in pathologies:
-        train[pathology] = get_filenames_labels_mode_pathologies(parent_dir=parent_dir, mode_to_retrieve='train', 
-                                              class_type_to_retrieve=pathology)
+        train[pathology] = get_filenames_labels_mode_pathologies(parent_dir=parent_dir,
+                                                                 mode_to_retrieve='train',
+                                                                 class_type_to_retrieve=pathology)
     print('\n ---- Retreving TEST filenames ---- \n')
     test = {}
     test['normal'] = get_filenames_labels_mode_healthy(parent_dir=parent_dir, mode_to_retrieve='test')
     for pathology in pathologies:
-        test[pathology] = get_filenames_labels_mode_pathologies(parent_dir=parent_dir, mode_to_retrieve='test', 
-                                              class_type_to_retrieve=pathology)
+        test[pathology] = get_filenames_labels_mode_pathologies(parent_dir=parent_dir,
+                                                                mode_to_retrieve='test',
+                                                                class_type_to_retrieve=pathology)
     print('\n ---- Retreving VALIDATION filenames ---- \n')
     validation = {}
     validation['normal'] = get_filenames_labels_mode_healthy(parent_dir=parent_dir, mode_to_retrieve='validation')
     for pathology in pathologies:
-        validation[pathology] = get_filenames_labels_mode_pathologies(parent_dir=parent_dir, mode_to_retrieve='validation', 
-                                              class_type_to_retrieve=pathology)
+        validation[pathology] = get_filenames_labels_mode_pathologies(parent_dir=parent_dir,
+                                                                      mode_to_retrieve='validation',
+                                                                      class_type_to_retrieve=pathology)
         
     return train, test, validation
 
@@ -141,33 +160,33 @@ def wrap_bytes(value):
 
 def convert_list_to_TFRecord(image_paths, labels, output_dir, output_name, max_size = 0, resize=False, new_size=None):
     '''
-    Args:
-    image_paths           List of file-paths for the images.
-    labels                Class-labels for the images.
-    output_name           File-name for the TFRecords output file, without the extension (.tfrecords)
-    max_size              Maximum number of images to be placed in the created file. Unlimited if max_size = 0. 
-                          If max_size is exceeded, more than one file will be created.
-    output_size_files     Number of images saved in each .tfrecords file
-    resize                Boolean indicating whether we want the images resized before saving them into TFRecords
-    new_size              Integer indicating the new size of the images. Deprecated if resize = False
+    :param image_paths           List of file-paths for the images.
+    :param labels                Class-labels for the images.
+    :param output_name           File-name for the TFRecords output file, without the extension (.tfrecords)
+    :param max_size              Maximum number of images to be placed in the created file. Unlimited if max_size = 0.
+                                 If max_size is exceeded, more than one file will be created.
+    :param max_size              Number of images saved in each .tfrecords file
+    :param resize                Boolean indicating whether we want the images resized before saving them into TFRecords
+    :param new_size              Integer indicating the new size of the images. Deprecated if resize = False
     '''
 
     assert len(image_paths) == len(labels), 'Number of image paths and labels do not coincide.'
     assert isinstance(max_size, int), 'Parameter max_size must be an integer'
     assert max_size >= 0, 'Parameter max_size must be equal or greater than 0'
-    
+
+    # General case, only one file needs to be created (max_size = 0)
+    n_files_to_be_created = 1
+
+    # Case in which max_size != 0
     if max_size != 0:
         # Check whether the list of image_path is greater than max_size
         if len(image_paths) > max_size:
             n_files_to_be_created = (len(image_paths) // max_size) + 1
-            print('WARNING: Max_size is exceeded. {} files will be created with maximum size {} to place the {} images and labels'.format(n_files_to_be_created, max_size, len(image_paths)))
-        else:
-            n_files_to_be_created = 1
-    elif max_size == 0:
-        n_files_to_be_created = 1
+            print('WARNING: Max_size is exceeded. {} files will be created with maximum size {} to place '
+                  'the {} images and labels'.format(n_files_to_be_created, max_size, len(image_paths)))
             
     # Create the name of the file/s that will be created
-    files_ids = ['balanced'] + [f for f in range(n_files_to_be_created)] # Give a different name to the first file
+    files_ids = ['balanced'] + [f for f in range(n_files_to_be_created)]  # Give a different name to the first file
     filenames_to_be_created = [output_name + '_' + str(f) + '.tfrecords' for f in files_ids]
             
     for file_id, filename_to_be_created in enumerate(filenames_to_be_created):
@@ -228,13 +247,15 @@ def convert_list_to_TFRecord(image_paths, labels, output_dir, output_name, max_s
         # Check that the created file has the expected amount of files
         print(output_path)
         len_tfrecord = len([x for x in tf.python_io.tf_record_iterator(output_path)])    
-        assert len_tfrecord == len(image_paths_batch), 'Expected size of the created TFRecord file does not coincide with the input size of the list of filenames'
+        assert len_tfrecord == len(image_paths_batch), 'Expected size of the created TFRecord file does ' \
+                                                       'not coincide with the input size of the list of filenames'
     
     # Flush the memory
     sys.stdout.flush()
 
 
 def create_TFRecords(train, test, validation, output_dir):
+
     print('\n ---- Creating TRAIN files in TFRecords format ----')
     for pathology in train.keys():
         convert_list_to_TFRecord(
@@ -244,7 +265,6 @@ def create_TFRecords(train, test, validation, output_dir):
             output_name='train/train_{}'.format(pathology),
             max_size=951)
 
-
     print('\n ---- Creating TEST files in TFRecords format ----')
     for pathology in test.keys():
         convert_list_to_TFRecord(
@@ -253,7 +273,6 @@ def create_TFRecords(train, test, validation, output_dir):
             output_dir=output_dir,
             output_name='test/test_{}'.format(pathology),
             max_size=298)
-
 
     print('\n ---- Creating VALIDATION files in TFRecords format ----')
     for pathology in validation.keys():

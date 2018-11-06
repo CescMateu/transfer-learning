@@ -1,7 +1,15 @@
 import tensorflow as tf
+import glob
 import numpy as np
 import os
-import glob
+
+
+def preprocess(x, mean_channels, is_training):
+    # Subtract the overall mean of the images
+    # x = x - tf.reshape(mean_channels, [1, 1, 3])
+    x = x / tf.constant(255, dtype=tf.float32)
+    return x
+
 
 def _parse_function(example_proto, mean_channels, is_training):
     ''' Parse the tfrecords files
@@ -28,11 +36,12 @@ def _parse_function(example_proto, mean_channels, is_training):
     # shape = tf.stack([parsed_features['height'],
     #                   parsed_features['width'],
     #                   parsed_features['depth']])
+
     img = tf.reshape(flatten_image, shape)
-    label = tf.expand_dims(parsed_features['label'], axis=-1)
+    label = parsed_features['label']
 
     # TODO: Ask about preprocessing.
-    #img = preprocess(img, mean_channels, is_training)
+    img = preprocess(img, mean_channels, is_training)
 
     return img, label
 
@@ -56,24 +65,28 @@ def input_fn(tfrecord_dir, mean_npz, n_images=None, is_training=False, seed=None
     filenames = glob.glob(filenames_pattern)
     n_shards = len(filenames)
 
-    # Count the number of images inside the directory if the number is not passed
+    assert n_shards != 0, 'Error: No filenames found'
+
+    # Count the number of images inside the directory if necessary
     if not n_images:
         n_images = 0
         for filename in filenames:
             print('Counting images from tfrecord {}'.format(filename))
-            n_images += sum(1 for _ in tf.python_io.tf_record_iterator(filename))
+            n_images_file = sum(1 for _ in tf.python_io.tf_record_iterator(filename))
+            print('Number of images found: {}'.format(n_images_file))
+            n_images += n_images_file
 
     # Compute the number of iterations needed as a function of the number of files and the batch size
     n_iter_per_epoch = n_images//params.batch_size if n_images % params.batch_size == 0 else n_images//params.batch_size+1
-    print("{} contains {} images --> using batch size of {}, so we got {} iterations/epoch.".format(
-        name,
+    print("\n{} contains {} images. Batch size is {}. We would need {} iterations/epoch.".format(
+        name.upper(),
         n_images,
         params.batch_size,
         n_iter_per_epoch
     ))
 
-    # Create a dataset formed by all tfrecord files and shuffle them
-    files = tf.data.Dataset().list_files(tf.constant(filenames_pattern)).shuffle(n_shards)
+    # Create a dataset formed by all tfrecord files
+    files = tf.data.Dataset().list_files(tf.constant(filenames_pattern))
 
     # TODO: Ask about mean channels and mean_npz files
     # mean_channels from mean_npz file
@@ -84,37 +97,19 @@ def input_fn(tfrecord_dir, mean_npz, n_images=None, is_training=False, seed=None
     # mean_channels = tf.constant(np.load(mean_npz).tolist())
     mean_channels = None
 
-    # Interleave shuffled tfrecord files, create tfrecord datasets from each file and parse/preprocess them
-    # dataset = files.interleave(tf.data.TFRecordDataset, cycle_length=4)
-    dataset = files.apply(
-        tf.contrib.data.parallel_interleave(
-            tf.data.TFRecordDataset, cycle_length=10
-        )
-    )
-
-    # Shuffle and repeat the dataset if training
-    if is_training:
-        print('Shuffling buffer size: {}'.format(n_images//n_shards*2))
-        dataset = dataset.apply(
-            tf.contrib.data.shuffle_and_repeat(
-                buffer_size=n_images//n_shards*2,
-                seed=seed
-            )
-        )
-    else:
-        dataset = dataset.repeat()
+    # Create TFRecordDataset objects from each of the tfrecord filenames
+    dataset = files.interleave(lambda x: tf.data.TFRecordDataset(x), cycle_length=10)
+    # TODO: Ask what does interleave exactly and why map does not work here?
 
     # Parse the record into tensors + preprocessing
-    dataset = dataset.apply(
-        tf.contrib.data.map_and_batch(
-            map_func=lambda x: _parse_function(x, mean_channels, is_training),
-            batch_size=params.batch_size,
-            num_parallel_batches=10,
-        )
-    )
+    dataset = dataset.map(map_func=lambda x: _parse_function(x, mean_channels, is_training), num_parallel_calls=10)
 
-    # Prefetching
-    dataset = dataset.prefetch(buffer_size=20)
+    # Shuffle the data if training
+    if is_training:
+        dataset = dataset.shuffle(buffer_size=n_images)
+
+    # Define the batch size, make it repeatable and establish a prefetch size
+    dataset = dataset.batch(params.batch_size).repeat().prefetch(buffer_size=20)
 
     # Create the corresponding iterator
     iterator = dataset.make_initializable_iterator()
@@ -128,30 +123,3 @@ def input_fn(tfrecord_dir, mean_npz, n_images=None, is_training=False, seed=None
     return output
 
 
-# def horizontal_flip(x):
-#     rand = tf.random_uniform(shape=(1,))[0]
-#     cond = tf.greater(rand, tf.constant(0.5))
-#     x = tf.cond(cond, lambda: tf.image.flip_left_right(x), lambda: x)
-#     return x
-#
-#
-# def random_crop(x):
-#     x = tf.random_crop(x, tf.constant([224, 224, 3]))
-#     return x
-#
-#
-# def central_crop(x):
-#     # Fraction of central image to be kept along each dimension is 224/256 = 0.875
-#     x = tf.image.central_crop(x, 0.875)
-#     return x
-#
-#
-# def preprocess(x, mean_channels, is_training):
-#     if is_training:
-#         x = horizontal_flip(x)
-#         x = random_crop(x)
-#     else:
-#         x = central_crop(x)
-#     x = x - tf.reshape(mean_channels, [1, 1, 3])
-#     x = x / tf.constant(255, dtype=tf.float32)
-#     return x

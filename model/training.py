@@ -2,8 +2,6 @@
 
 import logging
 import os
-
-from tqdm import trange
 import tensorflow as tf
 
 from model.utils import save_dict_to_json
@@ -32,9 +30,9 @@ def train_sess(sess, model_spec, num_steps, writer, params):
     sess.run(model_spec['metrics_init_op'])
     sess.run(model_spec['it_init_op'])
 
-    # Use tqdm for progress bar
-    t = trange(num_steps)
-    for i in t:
+    # Iterate over the number of necessary steps
+    for i in range(num_steps):
+
         # Evaluate summaries for tensorboard only once in a while
         if i % params.save_summary_steps == 0:
             # Perform a mini-batch update
@@ -44,8 +42,9 @@ def train_sess(sess, model_spec, num_steps, writer, params):
             writer.add_summary(summ, global_step_val)
         else:
             _, _, loss_val = sess.run([train_op, update_metrics, loss])
-        # Log the loss in the tqdm progress bar
-        t.set_postfix(loss='{:05.3f}'.format(loss_val))
+        # Log the loss and the batch every N times
+        if i % 10 == 0:
+            logging.info('Batch {}/{}. Loss: {}'.format(i, num_steps, loss_val))
 
     metrics_values = {k: v[0] for k, v in metrics.items()}
     metrics_val = sess.run(metrics_values)
@@ -86,9 +85,8 @@ def train_and_evaluate(train_model_spec, eval_model_spec, model_dir, params, res
         eval_writer = tf.summary.FileWriter(os.path.join(model_dir, 'eval_summaries'), sess.graph)
 
         best_eval_acc = 0.0
+        # Start iterating over the number of epochs
         for epoch in range(begin_at_epoch, begin_at_epoch + params.num_epochs):
-            # Run one epoch
-            logging.info("Epoch {}/{}".format(epoch + 1, begin_at_epoch + params.num_epochs))
 
             # Compute number of batches in one epoch (one full pass over the training set)
             num_steps = train_model_spec['n_iter_per_epoch']

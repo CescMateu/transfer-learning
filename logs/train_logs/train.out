@@ -1,0 +1,30 @@
+Counting images from tfrecord /gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_excavation_balanced.tfrecords
+Number of images found: 951
+Counting images from tfrecord /gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_nevus_balanced.tfrecords
+Number of images found: 951
+Counting images from tfrecord /gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_normal_balanced.tfrecords
+Number of images found: 951
+Counting images from tfrecord /gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_membrana_balanced.tfrecords
+Number of images found: 951
+Counting images from tfrecord /gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_dmae_balanced.tfrecords
+Number of images found: 951
+Counting images from tfrecord /gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/train/train_altpig_balanced.tfrecords
+Number of images found: 951
+
+TRAIN contains 5706 images. Batch size is 32, we will perform 179 iterations/epoch.
+
+Counting images from tfrecord /gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_normal_balanced.tfrecords
+Number of images found: 238
+Counting images from tfrecord /gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_dmae_balanced.tfrecords
+Number of images found: 238
+Counting images from tfrecord /gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_nevus_balanced.tfrecords
+Number of images found: 238
+Counting images from tfrecord /gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_excavation_balanced.tfrecords
+Number of images found: 238
+Counting images from tfrecord /gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_altpig_balanced.tfrecords
+Number of images found: 238
+Counting images from tfrecord /gpfs/scratch/bsc28/bsc28487/tfm_cesc/data/retina_TFRecords/validation/validation_membrana_balanced.tfrecords
+Number of images found: 238
+
+VALIDATION contains 1428 images. Batch size is 32, we will perform 45 iterations/epoch.
+
