@@ -3,8 +3,7 @@
 import tensorflow as tf
 import numpy as np
 
-from model.cnn import CNN
-
+from model.cnn import CNN, CNN2
 
 
 def build_model(input_tensor, params, is_training, reuse):
@@ -19,7 +18,7 @@ def build_model(input_tensor, params, is_training, reuse):
     '''
 
     # Feeding the 'inputs' data to the model
-    cnn = CNN()
+    cnn = CNN2()
     cnn.build(input_tensor, params, is_training, reuse)
     logits = cnn.logits
 
@@ -77,7 +76,10 @@ def model_fn(inputs, params, is_training):
     with tf.variable_scope("metrics"):
         metrics = {
             'accuracy': tf.metrics.accuracy(labels=labels, predictions=tf.argmax(logits, 1)),
-            'loss': tf.metrics.mean(loss)
+            'loss': tf.metrics.mean(loss),
+            #'auc': tf.metrics.auc(labels, predictions),
+            'precision': tf.metrics.precision(labels, predictions),
+            'recall': tf.metrics.recall(labels, predictions)
         }
 
     # Group the update ops for the tf.metrics
@@ -90,30 +92,19 @@ def model_fn(inputs, params, is_training):
     # Summaries for training
     tf.summary.scalar('loss', loss)
     tf.summary.scalar('accuracy', accuracy)
-    tf.summary.image('train_image', inputs['images'])
 
-    # # Add incorrectly labeled images
-    # mask = tf.not_equal(labels, predictions)
-    #
-    # with tf.Session() as sess:
-    #     sess.run(tf.global_variables_initializer())
-    #     sess.run(inputs['it_init_op'])
-    #
-    #     print('PREDICTIONS')
-    #     print(sess.run(tf.shape(predictions)))
-    #     print('LABELS')
-    #     print(sess.run(tf.shape(labels)))
-    #     print('MASK')
-    #     mask_sess = sess.run(mask)
-    #     print(mask_sess)
-    #     print(mask_sess.shape)
-    #
-    #
-    # # Add a different summary to know how they were misclassified
-    # for label in range(0, params.num_labels):
-    #     mask_label = tf.logical_and(mask, tf.equal(predictions, label))
-    #     incorrect_image_label = tf.boolean_mask(inputs['images'], mask_label)
-    #     tf.summary.image('incorrectly_labeled_{}'.format(label), incorrect_image_label)
+    if is_training:
+        # Add training images
+        tf.summary.image('train_image', inputs['images'])
+
+        # Add incorrectly labeled images
+        mask = tf.not_equal(labels, predictions)
+
+        # Add a different summary to know how they were misclassified
+        for label in range(0, params.num_labels):
+            mask_label = tf.logical_and(mask, tf.equal(predictions, label))
+            incorrect_image_label = tf.boolean_mask(inputs['images'], mask_label)
+            tf.summary.image('incorrectly_labeled_{}'.format(label), incorrect_image_label)
 
     # -----------------------------------------------------------
     # MODEL SPECIFICATIONS
@@ -121,7 +112,7 @@ def model_fn(inputs, params, is_training):
     # It contains nodes or operations in the graph that will be used for training and evaluation
     model_spec = inputs
     model_spec['variable_init_op'] = tf.global_variables_initializer()
-    model_spec["predictions"] = predictions
+    model_spec['predictions'] = predictions
     model_spec['loss'] = loss
     model_spec['accuracy'] = accuracy
     model_spec['metrics_init_op'] = metrics_init_op

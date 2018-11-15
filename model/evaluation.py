@@ -3,13 +3,12 @@
 import logging
 import os
 
-from tqdm import trange
 import tensorflow as tf
 
 from model.utils import save_dict_to_json
 
 
-def evaluate_sess(sess, model_spec, num_steps, writer=None, params=None):
+def evaluate_sess(sess, model_spec, num_steps, writer=None, params=None, last=False):
     """Train the model on `num_steps` batches.
 
     Args:

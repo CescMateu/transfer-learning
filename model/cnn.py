@@ -60,7 +60,7 @@ class CNN(ModelTemplate):
         # it does is normalizes the output of the previous layer.
 
         # Layer 0 (Input) -> Output size: (None, 512, 512, 3)
-        input_size = 512
+        input_size = params.image_size
 
         with tf.variable_scope('model', reuse=reuse):
 
@@ -103,7 +103,7 @@ class CNN(ModelTemplate):
             self.relu2 = relu2
             self.pool2 = pool2
 
-            # Output size (16, 16, num_channels*2)
+            # Output size (input_size/4, input_size/4, num_channels*2)
             assert pool2.get_shape().as_list() == [None, input_size/4, input_size/4, num_channels*2]
 
             ######################################################
@@ -124,7 +124,7 @@ class CNN(ModelTemplate):
             self.relu3 = relu3
             self.pool3 = pool3
 
-            # Output size (8, 8, num_channels*3)
+            # Output size (input_size/8, input_size/8, num_channels*3)
             assert pool3.get_shape().as_list() == [None, input_size/8, input_size/8, num_channels * 3]
 
             ######################################################
@@ -145,7 +145,7 @@ class CNN(ModelTemplate):
             self.relu4 = relu4
             self.pool4 = pool4
 
-            # Output size (4, 4, num_channels*4)
+            # Output size (input_size/16, input_size/16, num_channels*4)
             assert pool4.get_shape().as_list() == [None, input_size/16, input_size/16, num_channels * 4]
 
             ######################################################
@@ -155,7 +155,6 @@ class CNN(ModelTemplate):
             # of a tf.layers.flatten. tf.reshape has a static shape, meaning that some of the sizes are
             # independent of the rest of the network. tf.layers.dense needs that the last size of the previous
             # layer to be known.
-
 
             # Flatten the output result of the last block for building a FC layer
             flatten1 = tf.reshape(pool4, [-1, int(input_size/16 * input_size/16 * num_channels * 4)], name='flatten1')
@@ -183,3 +182,77 @@ class CNN(ModelTemplate):
             assert logits.get_shape().as_list() == [None, num_labels]
 
             self.logits = logits
+
+
+class CNN2(ModelTemplate):
+
+    def __init__(self):
+
+        self.dropout_rate = None
+        self.data = None
+        self.conv1_1 = None
+        self.conv1_2 = None
+        self.pool1 = None
+        self.conv2_1 = None
+        self.pool2 = None
+        self.conv3_1 = None
+        self.conv3_2 = None
+        self.pool3 = None
+        self.conv4_1 = None
+        self.conv4_2 = None
+        self.pool4 = None
+        self.conv5_1 = None
+        self.conv5_2 = None
+        self.pool5 = None
+        self.flatten = None
+        self.fc1 = None
+        self.fc1_dropout = None
+        self.logits = None
+
+    def build(self, input_tensor, params, is_training, reuse):
+
+        if input_tensor is None:
+            raise ValueError('"input_tensor" must be a valid tf.Tensor.')
+        assert input_tensor.get_shape().as_list() == [None, params.image_size, params.image_size, 3]
+
+        self.dropout_rate = params.dropout_rate
+        self.data = input_tensor
+
+        with tf.variable_scope('model', reuse=reuse):
+            conv1_1 = tf.layers.conv2d(input_tensor, 64, 5, activation=tf.nn.relu, name='conv1_1')
+            conv1_2 = tf.layers.conv2d(conv1_1, 64, 3, activation=tf.nn.relu, name='conv1_2')
+            pool1 = tf.layers.max_pooling2d(conv1_2, 2, 2, name="pool1")
+            conv2_1 = tf.layers.conv2d(pool1, 32, 3, activation=tf.nn.relu, name='conv2_1')
+            pool2 = tf.layers.max_pooling2d(conv2_1, 2, 2, padding="valid", name="pool2")
+            conv3_1 = tf.layers.conv2d(pool2, 32, 3, activation=tf.nn.relu, name='conv3_1')
+            conv3_2 = tf.layers.conv2d(conv3_1, 32, 3, activation=tf.nn.relu, name='conv3_2')
+            pool3 = tf.layers.max_pooling2d(conv3_2, 2, 2, name="pool3")
+            conv4_1 = tf.layers.conv2d(pool3, 32, 3, activation=tf.nn.relu, name='conv4_1')
+            conv4_2 = tf.layers.conv2d(conv4_1, 32, 3, activation=tf.nn.relu, name='conv4_2')
+            pool4 = tf.layers.max_pooling2d(conv4_2, 2, 2, name="pool4")
+            conv5_1 = tf.layers.conv2d(pool4, 64, 3, activation=tf.nn.relu, name='conv5_1')
+            conv5_2 = tf.layers.conv2d(conv5_1, 64, 3, activation=tf.nn.relu, name='conv5_2')
+            pool5 = tf.layers.max_pooling2d(conv5_2, 2, 2, name="pool5")
+            flatten = tf.layers.flatten(pool5, name='flatten')
+            fc1 = tf.layers.dense(flatten, 64, activation=tf.nn.relu, name='fc1')
+            fc1_dropout = tf.layers.dropout(fc1, rate=self.dropout_rate, name='fc1_dropout')
+            logits = tf.layers.dense(fc1_dropout, params.num_labels, activation=None, name='logits')
+
+        self.conv1_1 = conv1_1
+        self.conv1_2 = conv1_2
+        self.pool1 = pool1
+        self.conv2_1 = conv2_1
+        self.pool2 = pool2
+        self.conv3_1 = conv3_1
+        self.conv3_2 = conv3_2
+        self.pool3 = pool3
+        self.conv4_1 = conv4_1
+        self.conv4_2 = conv4_2
+        self.pool4 = pool4
+        self.conv5_1 = conv5_1
+        self.conv5_2 = conv5_2
+        self.pool5 = pool5
+        self.flatten = flatten
+        self.fc1 = fc1
+        self.fc1_dropout = fc1_dropout
+        self.logits = logits

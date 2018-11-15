@@ -6,12 +6,19 @@ import os
 
 def preprocess(x, mean_channels, is_training):
     # Subtract the overall mean of the images
-    # x = x - tf.reshape(mean_channels, [1, 1, 3])
-    x = x / tf.constant(255, dtype=tf.float32)
+
+    if mean_channels is None:
+        print('Omiting the preprocessing part with the mean_channels file involved')
+    else:
+        # TODO: Is this correct? Problems when using uint8 data type
+        x = x-mean_channels
+
+    # TODO: Do I have to divide every image by 255?
+    # x = x / tf.constant(255, dtype=tf.float32)
     return x
 
 
-def _parse_function(example_proto, mean_channels, is_training):
+def _parse_function(example_proto, mean_channels, is_training, params):
     ''' Parse the tfrecords files
 
     :param example_proto:
@@ -32,12 +39,12 @@ def _parse_function(example_proto, mean_channels, is_training):
     flatten_image = tf.decode_raw(parsed_features['image'], tf.float32)
 
     # TODO: Ask how not to hardcode these values
-    shape = tf.stack([512, 512, 3])
+    shape = tf.stack([params.image_size, params.image_size, 3])
     # shape = tf.stack([parsed_features['height'],
     #                   parsed_features['width'],
     #                   parsed_features['depth']])
 
-    img = tf.reshape(flatten_image, shape)
+    img = tf.cast(tf.reshape(flatten_image, shape), tf.uint8)
     label = parsed_features['label']
 
     # TODO: Ask about preprocessing.
@@ -90,19 +97,22 @@ def input_fn(tfrecord_dir, mean_npz, n_images=None, is_training=False, seed=None
 
     # TODO: Ask about mean channels and mean_npz files
     # mean_channels from mean_npz file
-    # if not os.path.exists(mean_npz):
-    #     raise Exception("mean_channels file does not exists: {}".format(
-    #         mean_npz
-    #     ))
-    # mean_channels = tf.constant(np.load(mean_npz).tolist())
-    mean_channels = None
+
+    if mean_npz is None:
+        mean_channels = None
+    else:
+        if not os.path.exists(mean_npz):
+            raise Exception("mean_channels file does not exists: {}".format(
+                mean_npz
+            ))
+        mean_channels = tf.cast(tf.constant(np.load(mean_npz).tolist()), tf.uint8)
 
     # Create TFRecordDataset objects from each of the tfrecord filenames
     dataset = files.interleave(lambda x: tf.data.TFRecordDataset(x), cycle_length=10)
     # TODO: Ask what does interleave exactly and why map does not work here?
 
     # Parse the record into tensors + preprocessing
-    dataset = dataset.map(map_func=lambda x: _parse_function(x, mean_channels, is_training), num_parallel_calls=10)
+    dataset = dataset.map(map_func=lambda x: _parse_function(x, mean_channels, is_training, params), num_parallel_calls=10)
 
     # Shuffle the data if training
     if is_training:

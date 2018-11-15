@@ -4,7 +4,7 @@ import logging
 import os
 import tensorflow as tf
 
-from model.utils import save_dict_to_json
+from model.utils import save_predictions_labels
 from model.evaluation import evaluate_sess
 
 
@@ -72,13 +72,13 @@ def train_and_evaluate(train_model_spec, eval_model_spec, model_dir, params, res
         # Initialize model variables
         sess.run(train_model_spec['variable_init_op'])
 
-        # Reload weights from directory if specified
-        if restore_from is not None:
-            logging.info("Restoring parameters from {}".format(restore_from))
-            if os.path.isdir(restore_from):
-                restore_from = tf.train.latest_checkpoint(restore_from)
-                begin_at_epoch = int(restore_from.split('-')[-1])
-            last_saver.restore(sess, restore_from)
+        # # Reload weights from directory if specified
+        # if restore_from is not None:
+        #     logging.info("Restoring parameters from {}".format(restore_from))
+        #     if os.path.isdir(restore_from):
+        #         restore_from = tf.train.latest_checkpoint(restore_from)
+        #         begin_at_epoch = int(restore_from.split('-')[-1])
+        #     last_saver.restore(sess, restore_from)
 
         # For tensorboard (takes care of writing summaries to files)
         train_writer = tf.summary.FileWriter(os.path.join(model_dir, 'train_summaries'), sess.graph)
@@ -87,14 +87,15 @@ def train_and_evaluate(train_model_spec, eval_model_spec, model_dir, params, res
         best_eval_acc = 0.0
         # Start iterating over the number of epochs
         for epoch in range(begin_at_epoch, begin_at_epoch + params.num_epochs):
+            logging.info('Epoch {}/{}'.format(epoch+1, params.num_epochs))
 
             # Compute number of batches in one epoch (one full pass over the training set)
             num_steps = train_model_spec['n_iter_per_epoch']
             train_sess(sess, train_model_spec, num_steps, train_writer, params)
 
             # Save weights
-            last_save_path = os.path.join(model_dir, 'last_weights', 'after-epoch')
-            last_saver.save(sess, last_save_path, global_step=epoch + 1)
+            # last_save_path = os.path.join(model_dir, 'last_weights', 'after-epoch')
+            # last_saver.save(sess, last_save_path, global_step=epoch + 1)
 
             # Evaluate for one epoch on validation set
             num_steps = eval_model_spec['n_iter_per_epoch']
@@ -106,13 +107,20 @@ def train_and_evaluate(train_model_spec, eval_model_spec, model_dir, params, res
                 # Store new best accuracy
                 best_eval_acc = eval_acc
                 # Save weights
-                best_save_path = os.path.join(model_dir, 'best_weights', 'after-epoch')
-                best_save_path = best_saver.save(sess, best_save_path, global_step=epoch + 1)
-                logging.info("- Found new best accuracy, saving in {}".format(best_save_path))
+                # best_save_path = os.path.join(model_dir, 'best_weights', 'after-epoch')
+                # best_save_path = best_saver.save(sess, best_save_path, global_step=epoch + 1)
+                logging.info("- Found new best accuracy: {}".format(best_eval_acc))
                 # Save best eval metrics in a json file in the model directory
-                best_json_path = os.path.join(model_dir, "metrics_eval_best_weights.json")
-                save_dict_to_json(metrics, best_json_path)
+                # best_json_path = os.path.join(model_dir, "metrics_eval_best_weights.json")
+                # save_dict_to_json(metrics, best_json_path)
 
             # Save latest eval metrics in a json file in the model directory
-            last_json_path = os.path.join(model_dir, "metrics_eval_last_weights.json")
-            save_dict_to_json(metrics, last_json_path)
+            # last_json_path = os.path.join(model_dir, "metrics_eval_last_weights.json")
+            # save_dict_to_json(metrics, last_json_path)
+
+        # Training Dataset: Retrieve the labels and predictions of the evaluation dataset
+        num_steps = train_model_spec['n_iter_per_epoch']
+        save_predictions_labels(sess, train_model_spec, num_steps, model_dir, mode='train')
+        # Evaluation Dataset: Retrieve the labels and predictions of the evaluation dataset
+        num_steps = eval_model_spec['n_iter_per_epoch']
+        save_predictions_labels(sess, eval_model_spec, num_steps, model_dir, mode='validation')
