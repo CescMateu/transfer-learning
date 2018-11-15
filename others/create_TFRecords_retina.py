@@ -263,7 +263,7 @@ def create_TFRecords(train, test, validation, output_dir):
             labels=train[pathology]['labels'],
             output_dir=output_dir,
             output_name='train/train_{}'.format(pathology),
-            max_size=951)
+            max_size=10)
 
     print('\n ---- Creating TEST files in TFRecords format ----')
     for pathology in test.keys():
@@ -272,7 +272,7 @@ def create_TFRecords(train, test, validation, output_dir):
             labels=test[pathology]['labels'],
             output_dir=output_dir,
             output_name='test/test_{}'.format(pathology),
-            max_size=298)
+            max_size=10)
 
     print('\n ---- Creating VALIDATION files in TFRecords format ----')
     for pathology in validation.keys():
@@ -281,7 +281,7 @@ def create_TFRecords(train, test, validation, output_dir):
             labels=validation[pathology]['labels'],
             output_dir=output_dir,
             output_name='validation/validation_{}'.format(pathology),
-            max_size=238)
+            max_size=10)
 
 
 if __name__ == '__main__':

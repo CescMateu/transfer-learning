@@ -65,11 +65,14 @@ if __name__ == '__main__':
     train_and_evaluate(train_model_spec, eval_model_spec, args.model_dir, params, args.restore_from)
 
     # Create and save the confusion matrices for the train and evaluation datasets
-    logging.info('\nCreating the confusion matrix...')
     for mode in ['train', 'validation']:
+        logging.info('Creating the confusion matrix for {} data...'.format(mode))
+
+        logging.info('\tRetrieving information from the labels and predictions files')
         predictions_file = os.path.join(args.model_dir, 'results', mode, 'predictions.npy')
         labels_file = os.path.join(args.model_dir, 'results', mode, 'labels.npy')
+
+        logging.info('\tComputing the confusion matrix and plotting the results')
         cm = confusion_matrix(predictions_file, labels_file, params)
-        #names = ['0', '1', '2', '3', '4', '5']
         names = ['none', 'altpig', 'dmae', 'excavation', 'membrana', 'nevus']
         plot_and_save_confusion_matrix(cm, names=names, model_dir=args.model_dir, mode=mode)

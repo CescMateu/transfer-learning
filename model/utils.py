@@ -81,10 +81,19 @@ def save_dict_to_json(d, json_path):
 
 
 def confusion_matrix(predictions_file, labels_file, params):
+    '''
+    Given the a predictions and labels file in .npy format, this function returns a np.array with the corresponding
+    confusion matrix
+    '''
 
+    assert os.path.isfile(predictions_file), 'The predictions file provided does not exist'
+    assert os.path.isfile(labels_file), 'The labels file provided does not exist'
+
+    # Load the files
     preds = np.load(predictions_file)
     labs = np.load(labels_file)
 
+    # Sanity check
     assert len(labs) == len(preds), 'The real and predicted vectors must have the' \
                                     ' same length: {} != {}'.format(len(labs), len(preds))
     n = len(labs)
@@ -100,7 +109,11 @@ def confusion_matrix(predictions_file, labels_file, params):
 
 
 def plot_and_save_confusion_matrix(cm, names, model_dir, mode, title='Confusion matrix',
-                          output_fname='confusion_matrix.jpg', cmap=plt.cm.Blues):
+                                   output_fname='confusion_matrix.jpg', cmap=plt.cm.Blues):
+    '''
+    Given a confusion matrix in np.array format (see confusion_matrix() from this same file), this function
+    plots it and stores it in "model_dir"/plots/"mode"/"output_fname".
+    '''
 
     # Define the output directory path
     plots_dir = os.path.join(model_dir, 'plots')
