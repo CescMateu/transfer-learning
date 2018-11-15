@@ -175,6 +175,6 @@ experiments/
 logs/
 notebooks/
 .idea/
-model/__pychache__/
+model/__pycache__/
 
 # End of https://www.gitignore.io/api/macos,python,jupyternotebook
