@@ -168,4 +168,12 @@ dmypy.json
 pyvenv.cfg
 pip-selfcheck.json
 
+
+## Retina project things that need to be ignored
+data/
+experiments/
+logs/
+notebooks/
+.idea/
+
 # End of https://www.gitignore.io/api/macos,python,jupyternotebook
