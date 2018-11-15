@@ -18,7 +18,7 @@ def build_model(input_tensor, params, is_training, reuse):
     '''
 
     # Feeding the 'inputs' data to the model
-    cnn = CNN()
+    cnn = CNN2()
     cnn.build(input_tensor, params, is_training, reuse)
     logits = cnn.logits
 

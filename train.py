@@ -10,7 +10,8 @@ import tensorflow as tf
 
 
 from model.input_fn import input_fn
-from model.utils import Params, set_logger, confusion_matrix, plot_and_save_confusion_matrix
+from model.utils import Params, set_logger, create_folder_structure
+from model.utils import confusion_matrix, plot_and_save_confusion_matrix
 from model.model_fn import model_fn
 from model.training import train_and_evaluate
 
@@ -44,6 +45,9 @@ if __name__ == '__main__':
 
     # Set the logger
     set_logger(os.path.join(args.model_dir, 'train.log'))
+
+    # Create the correct folder structure for saving the results
+    create_folder_structure(args.model_dir)
 
     # Create the input data pipeline
     logging.info("\nReading the TFRecords training files...")

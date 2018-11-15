@@ -3,6 +3,8 @@
 import json
 import logging
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import os
 
@@ -119,14 +121,6 @@ def plot_and_save_confusion_matrix(cm, names, model_dir, mode, title='Confusion 
     plots_dir = os.path.join(model_dir, 'plots')
     plots_mode_dir = os.path.join(plots_dir, mode)
 
-    # Create a directory where to save the plots if necessary
-    if not os.path.isdir(plots_dir):
-        os.system('mkdir {}'.format(plots_dir))
-
-    if not os.path.isdir(plots_mode_dir):
-        logging.info('Creating output directory for storing plots: {}'.format(plots_mode_dir))
-        os.system('mkdir {}'.format(plots_mode_dir))
-
     # Start plotting the confusion matrix
     plt.figure()
     plt.imshow(cm, interpolation='nearest', cmap=cmap)
@@ -157,19 +151,12 @@ def save_predictions_labels(sess, model_spec, num_steps, model_dir, mode):
     sess.run(model_spec['it_init_op'])
     sess.run(model_spec['metrics_init_op'])
 
-    # Create the results directory if necessary
-    results_dir = os.path.join(model_dir, 'results')
-    if not os.path.isdir(results_dir):
-        os.system('mkdir {}'.format(results_dir))
-
-    results_eval_dir = os.path.join(results_dir, mode)
-    if not os.path.isdir(results_eval_dir):
-        logging.info('Creating the "{}" directory'.format(results_eval_dir))
-        os.system('mkdir {}'.format(results_eval_dir))
+    # Get the output path
+    results_dir = os.path.join(model_dir, 'results', mode)
 
     # Define the names of the files to be created
-    predictions_file = os.path.join(results_eval_dir, 'predictions.npy')
-    labels_file = os.path.join(results_eval_dir, 'labels.npy')
+    predictions_file = os.path.join(results_dir, 'predictions.npy')
+    labels_file = os.path.join(results_dir, 'labels.npy')
 
     first_run = True
 
@@ -192,3 +179,18 @@ def save_predictions_labels(sess, model_spec, num_steps, model_dir, mode):
             # Labels
             lab_file = np.load(labels_file)
             np.save(labels_file, np.concatenate((lab_file, lab)))
+
+
+def create_folder_structure(experiment_path):
+    '''
+    Create the correct folder structure inside the corresponding experiment path
+    for saving all the different results
+    '''
+
+    logging.info('Creating the appropiate folder structure...')
+    os.system('mkdir {}/plots'.format(experiment_path))
+    os.system('mkdir {}/plots/train'.format(experiment_path))
+    os.system('mkdir {}/plots/validation'.format(experiment_path))
+    os.system('mkdir {}/results'.format(experiment_path))
+    os.system('mkdir {}/results/train'.format(experiment_path))
+    os.system('mkdir {}/results/validation'.format(experiment_path))
